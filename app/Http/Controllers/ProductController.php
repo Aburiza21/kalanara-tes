@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class ProductController extends Controller
@@ -14,6 +15,14 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'search' => 'min:3'
+        ]);
+
+        if ($validator->fails()) {
+            // dd($validator->errors()->messages());
+            Alert::warning('Gagal', 'Input Tidak Valid');
+        }
         // dd($request->search);
         //
         // dd('Hello');
@@ -49,6 +58,17 @@ class ProductController extends Controller
         //
         // dd($request->all());
 
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            // dd($validator->errors()->messages());
+            Alert::warning('Gagal', 'Input Tidak Valid');
+        }
+
         // Validation
 
 
@@ -59,11 +79,11 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'price' => $request->price,
             ]);
-            Alert::success('Success Title', 'Success Message');
+            Alert::success('Success', 'Success Message');
             return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;
-            Alert::error('Success Title', 'Success Message');
+            Alert::error('Gagal', 'Error Message');
             return redirect()->back();
         }
     }
@@ -92,6 +112,16 @@ class ProductController extends Controller
     public function update(Request $request, string $id)
     {
         //
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            // dd($validator->errors()->messages());
+            Alert::warning('Gagal', 'Input Tidak Valid');
+        }
 
         try {
             Product::where('id', $id)->update([
@@ -100,11 +130,11 @@ class ProductController extends Controller
                 'description' => $request->description,
                 'price' => $request->price,
             ]);
-            Alert::success('Success Title', 'Success Message');
+            Alert::success('Success', 'Success Message');
             return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;
-            Alert::error('Success Title', 'Success Message');
+            Alert::error('Gagal', 'Error Message');
             return redirect()->back();
         }
     }

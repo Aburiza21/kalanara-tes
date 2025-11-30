@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use App\Models\TransactionItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class TransactionItemController extends Controller
 {
@@ -33,7 +34,8 @@ class TransactionItemController extends Controller
     {
         // dd($request->all());
 
-        $product = Product::find($request->product);
+        try {
+            $product = Product::find($request->product);
             // dd($product);
             $transaction = Transaction::where('invoice', $request->invoice)->first();
             $transaction->update(
@@ -54,7 +56,13 @@ class TransactionItemController extends Controller
             );
 
             // dd($transaction);
+            Alert::success('Success', 'Success Message');
             return redirect()->back();
+        } catch (\Throwable $th) {
+            throw $th;
+            Alert::error('Gagal', 'Error Message');
+            return redirect()->back();
+        }
     }
 
     /**

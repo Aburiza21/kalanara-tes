@@ -7,6 +7,7 @@ use App\Models\Transaction;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class TransactionController extends Controller
@@ -16,6 +17,15 @@ class TransactionController extends Controller
      */
     public function index(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'search' => 'min:3'
+        ]);
+
+        if ($validator->fails()) {
+            // dd($validator->errors()->messages());
+            Alert::warning('Gagal', 'Input Tidak Valid');
+        }
+
         // dd($request->search);
         //
         // dd('Hello');
@@ -65,15 +75,23 @@ class TransactionController extends Controller
      */
     public function store(Request $request)
     {
-        $transaction = Transaction::create(
-            [
-                'user_id' => Auth::user()->id,
-                'invoice' => date(time()).Transaction::count(),
-                'total' => 0,
-                'pay' => 0,
-                'return' => 0
-            ]
-        );
+        try {
+            $transaction = Transaction::create(
+                [
+                    'user_id' => Auth::user()->id,
+                    'invoice' => date(time()).Transaction::count(),
+                    'total' => 0,
+                    'pay' => 0,
+                    'return' => 0
+                ]
+            );
+            Alert::success('Success', 'Success Message');
+            return redirect()->back();
+        } catch (\Throwable $th) {
+            throw $th;
+            Alert::error('Gagal', 'Error Message');
+            return redirect()->back();
+        }
         // dd($invoice);
 
         // dd($transaction);
@@ -111,11 +129,11 @@ class TransactionController extends Controller
                 'pay' => $request->pay,
                 'return' => ($transaction->total - $request->pay),
             ]);
-            Alert::success('Success Title', 'Success Message');
+            Alert::success('Success', 'Success Message');
             return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;
-            Alert::error('Success Title', 'Success Message');
+            Alert::error('Gagal', 'Error Message');
             return redirect()->back();
         }
     }
@@ -127,11 +145,11 @@ class TransactionController extends Controller
     {
         try {
             Transaction::where('id', $id)->delete();
-            Alert::success('Success Title', 'Success Message');
+            Alert::success('Success', 'Success Message');
             return redirect()->back();
         } catch (\Throwable $th) {
             throw $th;
-            Alert::error('Success Title', 'Success Message');
+            Alert::error('Gagal', 'Error Message');
             return redirect()->back();
         }
     }
