@@ -17,7 +17,11 @@ class TransactionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => \App\Models\User::factory(),
+            'invoice' => fake()->numberBetween(10, 20),
+            'total' => fake()->numberBetween(10, 20),
+            'pay' => fake()->numberBetween(10, 20),
+            'return' => fake()->numberBetween(10, 20),
         ];
     }
 }

@@ -9,4 +9,19 @@ class Product extends Model
 {
     /** @use HasFactory<\Database\Factories\ProductFactory> */
     use HasFactory;
+
+    protected $fillable = [
+        'user_id',
+        'title',
+        'description',
+        'price',
+    ];
+
+    // Begin Relasi Eloquent
+
+    // User
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

@@ -14,10 +14,18 @@ class TransactionItemFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
     public function definition(): array
     {
+        // Init
+
         return [
-            //
+            'transaction_id' => \App\Models\Transaction::factory(),
+            'product_id' => \App\Models\Product::factory(),
+            'price' => function (array $attributes) {
+                return \App\Models\Product::find($attributes['product_id'])->price;
+            },
+            'quantity' => fake()->randomNumber(2, false),
         ];
     }
 }
