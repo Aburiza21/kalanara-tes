@@ -18,7 +18,7 @@ class TransactionFactory extends Factory
     {
         return [
             'user_id' => \App\Models\User::factory(),
-            'invoice' => fake()->numberBetween(10, 20),
+            'invoice' => fake()->numberBetween(10, 1000),
             'total' => fake()->numberBetween(10, 20),
             'pay' => fake()->numberBetween(10, 20),
             'return' => fake()->numberBetween(10, 20),

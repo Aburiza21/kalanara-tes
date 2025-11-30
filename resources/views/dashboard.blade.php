@@ -23,10 +23,10 @@
     new Chart(ctx, {
         type: 'bar',
         data: {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: {!! json_encode($label) !!},
         datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 2, 3],
+            label: 'Quantity Sales of Product',
+            data: {!! json_encode($value) !!},
             borderWidth: 1
         }]
         },
