@@ -19,8 +19,11 @@ Route::middleware('auth')->group(function () {
     })->name('dashboard');
 
     // Route Product
-    Route::prefix('product')->name('product.')->group(function () {
+    Route::prefix('products')->name('products.')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
+        Route::post('/store', [ProductController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [ProductController::class, 'update'])->name('update');
+        Route::delete('/delete/{id}', [ProductController::class, 'destroy'])->name('destroy');
     });
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -14,8 +14,14 @@
         {{-- Chart JS --}}
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+        {{-- Flowbite --}}
+        <link href="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.css" rel="stylesheet" />
+
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -35,5 +41,9 @@
                 {{ $slot }}
             </main>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/flowbite@4.0.1/dist/flowbite.min.js"></script>
+
+         @include('sweetalert::alert', ['cdn' => "https://cdn.jsdelivr.net/npm/sweetalert2@9"])
     </body>
 </html>
