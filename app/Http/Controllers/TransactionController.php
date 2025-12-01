@@ -44,7 +44,8 @@ class TransactionController extends Controller
         // dd(date(time()));
         $transaction = Transaction::latest()->first();
         // dd($transaction);
-        if($transaction->return < 0){
+        try {
+            if($transaction->return < 0){
             $transaction = Transaction::create(
                 [
                     'user_id' => Auth::user()->id,
@@ -54,6 +55,19 @@ class TransactionController extends Controller
                     'return' => 0
                 ]
             );
+        }
+        } catch (\Throwable $th) {
+            //throw $th;
+            $transaction = Transaction::create(
+                [
+                    'user_id' => Auth::user()->id,
+                    'invoice' => date(time()).Transaction::count(),
+                    'total' => 0,
+                    'pay' => 0,
+                    'return' => 0
+                ]
+            );
+
         }
         // dd($invoice);
 
