@@ -13,8 +13,13 @@ class DashboardController extends Controller
     public function index()
     {
         //
-        $label = TransactionItem::with('product')->groupBy('product_id')->orderBy('quantity', 'desc')->limit(10)->get()->pluck('product.title');
+        try {
+            $label = TransactionItem::with('product')->groupBy('product_id')->orderBy('quantity', 'desc')->limit(10)->get()->pluck('product.title');
         $value = TransactionItem::with('product')->groupBy('product_id')->orderBy('quantity', 'desc')->limit(10)->get()->pluck('quantity');
+        } catch (\Throwable $th) {
+            $label = [];
+        $value = [];
+        }
         // dd($label, $value);
         return view('dashboard')->with(compact('label', 'value'));
     }
